@@ -77,6 +77,9 @@ function isInsideHash(key, hashedArr, hashFunc) {
         : searchChain(key, hashedArr[index]);
 }
 
+const testHash = build_hashed([12345,13456,14567,23456], math_pow(2, 102));
+
+//NOT YET FINISHED.
 /*
 input: Array of elements, key universe
 element format: (key, element)
@@ -106,5 +109,3 @@ const dictionaryLength = dict => array_length(dict);
 function getDictElement(key) {
     
 }
-
-const testHash = build_hashed([12345,13456,14567,23456], math_pow(2, 102));
