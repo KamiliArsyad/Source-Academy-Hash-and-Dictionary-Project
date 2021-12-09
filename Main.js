@@ -79,33 +79,84 @@ function isInsideHash(key, hashedArr, hashFunc) {
 
 const testHash = build_hashed([12345,13456,14567,23456], math_pow(2, 102));
 
-//NOT YET FINISHED.
-/*
+//-------------------------------------------------
+// ACCESSING COMPONENTS OF DICTIONARY
+//-------------------------------------------------
+const getKey = tuple => head(tuple);
+const getElem = tuple => tail(tuple);
+
+function getFromDict(dict, func) {
+    const dictionaryLength = dict => array_length(dict);
+    const result = [];
+    const len = dictionaryLength(dict);
+    
+    for(let i = 0; i < len; i = i + 1) {
+        result[i] = func(dict[i]);
+    }
+    
+    return result;
+}
+//-------------------------------------------------
+
+
+// BUILD DICTIONARY
+/* ------------------------------------------------
 input: Array of elements, key universe
 element format: (key, element)
 output: Hashed dictionary
-*/
-function createDictionary(arr, universe) {
-    function getDictKeys(dict) {
-        const keys = [];
-        const len = dictionaryLength(dict)
+--------------------------------------------------*/
+
+function buildDictionary(arr, universe) {
+    const keys = getFromDict(arr, getKey);
+    const size = array_length(keys);
+    const result = [];
+    const hashFunc = generateUHash(size, universe);
+    
+    for(let i = 0; i < size; i = i + 1) {
+        const pos = hashFunc(keys[i]);
+        const tuple = arr[i];
         
-        for(let i = 0; i < len; i = i + 1) {
-            keys[i] = head(dict[i]);
-        }
-        
-        return keys;
+        //create chain:
+        result[pos] = result[pos] === undefined
+            ? pair(tuple, null)
+            : pair(tuple, result[pos]);
     }
     
-    const keys = getDictKeys(arr);
-    
-    build_hashed();
-    
-    return f => f(arr);
+    return func => func(pair(result, hashFunc));
 }
 
-const dictionaryLength = dict => array_length(dict);
+// Dictionary Operations
+const idF = x => x;
+const DictKeyInterface = dict => key => findElement(dict, key);
 
-function getDictElement(key) {
+function findElement(dict, key){
+    const idF = x => x;
+    const hashFunc = tail(dict(idF));
+    const dictionary = head(dict(idF));
+
+    //to be added later: return error if key is not inside dictionary
     
+    //
+    const hashedIndex = hashFunc(key);
+    const chain = dictionary[hashedIndex];
+    
+    //get the element
+    let pointer = chain;
+    while(!is_null(pointer)) {
+        if(key === getKey(head(pointer))) {
+            return getElem(head(pointer));
+        } else {
+            pointer = tail(pointer);
+        }
+    }
 }
+
+// FINAL DICTIONARY (only support build and access)
+function dictionary(arr, universe) {
+    return DictKeyInterface(buildDictionary(arr, universe));
+}
+
+//test
+const testDict = dictionary([[1235, 'halo'], [10000, 'hai'], [445, 'done']], math_pow(2, 32));
+
+testDict(1235);
