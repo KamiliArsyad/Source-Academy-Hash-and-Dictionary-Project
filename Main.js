@@ -1,3 +1,11 @@
+/*
+This is now a fully functional static dictionary :)
+Build Time Consumption: Theta(n).
+Build Space Consumption: Theta(n);
+
+Access element from key Time consumption: O(n)
+*/
+
 function build(keys) {
     const arr = [];
     
