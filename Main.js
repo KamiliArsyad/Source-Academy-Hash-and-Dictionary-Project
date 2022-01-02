@@ -3,7 +3,7 @@ This is now a fully functional static dictionary :)
 Build Time Consumption: Theta(n).
 Build Space Consumption: Theta(n);
 
-Access element from key Time consumption: O(n)
+Access element from key Time consumption: O(1)
 */
 
 function build(keys) {
